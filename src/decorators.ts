@@ -1,79 +1,74 @@
 import {Subject} from 'rxjs';
 import {SimpleChanges, SimpleChange} from '@angular/core';
 // The set of lifecycle notification events. Omits ng-on-changes because that is handled in a separate stream.
-export type LifeCycleNotificationEvent =
-    "ng-on-init" |
-    "ng-do-check" |
-    "ng-after-content-init" |
-    "ng-after-content-checked" |
-    "ng-after-view-init" |
-    "ng-after-view-checked" |
-    "ng-on-destroy";
 
+const lifeCycleEventNames = [
+    "ngOnInit",
+    "ngDoCheck",
+    "ngAfterContentInit",
+    "ngAfterContentChecked",
+    "ngAferViewInit",
+    "ngAfterViewChecked",
+    "ngOnDestroy"
+];
+
+function ngEventStreamName(name: string) {
+    const unprefixed = name.replace("ng", "");
+    return unprefixed.charAt(0).toLowerCase() + unprefixed.slice(1);
+}
+
+export type LifeCycleNotificationEvent =
+"ngOnInit" |
+"ngDoCheck" |
+"ngAfterContentInit" |
+"ngAfterContentChecked" |
+"ngAferViewInit" |
+"ngAfterViewChecked" |
+"ngOnDestroy";
+
+function eqs(left: any) {
+    return function (right: any) {
+        return left === right;
+    }
+}
+
+// Point free for use with cool functional libraries... then didn't want to take a dependency on one.
+function renderLifeCycleObservable(target: any) {
+    return function(eventName: string) {
+        target[ngEventStreamName(name)] = target['lifeCycleEvents'].filter(eqs(eventName));
+    }
+}
 
 export function ReactiveLifeCycle(): ClassDecorator {
     return function(target: Function): Function {
         function Decorated() {
-            target.apply(this, Array.prototype.slice.call(arguments, 0));
+            // Initialize before the delegated constructor so that it may reference these streams
             this.lifeCycleEvents = new Subject();
+            for (var i = 0; i < lifeCycleEventNames.length; i++) {
+                renderLifeCycleObservable(this)(lifeCycleEventNames[i]);
+            }
+            target.apply(this, Array.prototype.slice.call(arguments, 0));
         }
         Decorated.prototype = Object.create(target.prototype);
-        Decorated.prototype.ngOnInit = function () {
-            if (target.prototype.ngOnInit) {
-                target.prototype.ngOnInit.apply(this, Array.prototype.slice.call(arguments, 0));
-            }
-            this.lifeCycleEvents.next("ng-on-init");
-        }
-        Decorated.prototype.ngDoCheck = function () {
-            if (target.prototype.ngDoCheck) {
-                target.prototype.ngDoCheck.apply(this, Array.prototype.slice.call(arguments, 0));
-            }
-            this.lifeCycleEvents.next("ng-do-check");
-        }
-        Decorated.prototype.ngAfterContentInit = function () {
-            if (target.prototype.ngAfterContentInit) {
-                target.prototype.ngAfterContentInit.apply(this, Array.prototype.slice.call(arguments, 0));
-            }
-            this.lifeCycleEvents.next("ng-after-content-init");
-        }
-        Decorated.prototype.ngAfterViewInit = function () {
-            if (target.prototype.ngAfterViewInit) {
-                target.prototype.ngAfterViewInit.apply(this, Array.prototype.slice.call(arguments, 0));
-            }
-            this.lifeCycleEvents.next("ng-after-view-init");
-        }
-        Decorated.prototype.ngAfterViewChecked = function () {
-            if (target.prototype.ngAfterViewChecked) {
-                target.prototype.ngAfterViewChecked.apply(this, Array.prototype.slice.call(arguments, 0));
-            }
-            this.lifeCycleEvents.next("ng-after-view-checked");
-        }
-        Decorated.prototype.ngOnDestroy = function () {
-            if (target.prototype.ngOnDestroy) {
-                target.prototype.ngOnDestroy.apply(this, Array.prototype.slice.call(arguments, 0));
-            }
-            this.lifeCycleEvents.next("ng-on-destroy");
-        }
         return Decorated;
     }
 }
 
-export function ReactiveChanges(): ClassDecorator {
-    return function (target: Function): Function {
-        function Decorated() {
-            target.apply(this, Array.prototype.slice.call(arguments, 0));
-            this.inputValues = new Subject();
-            this.changes = new Subject();
-        }
-        Decorated.prototype = Object.create(target.prototype);
-        Decorated.prototype.ngOnChanges = function (changes: SimpleChanges) {
-            this.changes.next(changes);
-            const values = {};
-            for (let k in changes) {
-                values[k] = changes[k].currentValue;
+export function ReactiveChange(inputProperty: string): PropertyDecorator {
+    return function (target: Object, propertyKey: string | symbol): void {
+        target[propertyKey] = new Subject()
+        const originalNgOnChanges = target['ngOnChanges'];
+        target['ngOnChanges'] = function(changes: SimpleChanges) {
+            if (originalNgOnChanges) {
+                originalNgOnChanges.call(this, changes);
             }
-            this.inputValues.next(values);
+            if (this.hasOwnProperty(propertyKey) && this[propertyKey] && changes[inputProperty]) {
+                this[propertyKey].next(changes[inputProperty]);
+            }
         }
-        return Decorated;
     }
+}
+
+export function reactiveChangeValue(change: SimpleChange): any {
+    return change.currentValue;
 }
