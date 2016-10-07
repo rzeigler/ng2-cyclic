@@ -1,9 +1,10 @@
 {
-  "name": "ng2-cyclic",
+  "name": "ng2-reactor",
   "version": "0.1.0-alpha1",
   "description": "A set of utilities for working with ngrx to create a closed loop.",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,17 +24,17 @@
   },
   "homepage": "https://github.com/rzeigler/ng2-cyclic#readme",
   "peerDependencies": {
-    "rxjs": "^5.0.0-beta.12",
     "@angular/core": "^2.0.1",
-    "zone.js": "^0.6.21"
+    "@angular/forms": "^2.0.1",
+    "rxjs": "^5.0.0-beta.12"
   },
   "devDependencies": {
     "@angular/core": "^2.0.1",
     "@angular/forms": "^2.0.1",
+    "rxjs": "^5.0.0-beta.12",
     "zone.js": "^0.6.21",
     "chai": "^3.5.0",
     "mocha": "^3.1.0",
-    "rxjs": "^5.0.0-beta.12",
     "typescript": "^2.0.3",
     "typings": "^1.4.0"
   }
