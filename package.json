@@ -3,13 +3,17 @@
   "version": "0.1.0-alpha1",
   "description": "A set of utilities for working with ngrx to create a closed loop.",
   "main": "dist/index.js",
+  "typings": "dist/index",
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rzeigler/ng2-cyclic.git"
+    "url": "git+https://github.com/rzeigler/ng2-reactor.git"
   },
   "keywords": [
     "ngrx",
@@ -20,22 +24,23 @@
   "author": "Ryan Zeigler <zeiglerr@gmail.com>",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/rzeigler/ng2-cyclic/issues"
+    "url": "https://github.com/rzeigler/ng2-reactor/issues"
   },
-  "homepage": "https://github.com/rzeigler/ng2-cyclic#readme",
+  "homepage": "https://github.com/rzeigler/ng2-reactor#readme",
   "peerDependencies": {
     "@angular/core": "^2.0.1",
     "@angular/forms": "^2.0.1",
     "rxjs": "^5.0.0-beta.12"
   },
   "devDependencies": {
+    "@angular/common": "^2.0.2",
     "@angular/core": "^2.0.1",
     "@angular/forms": "^2.0.1",
-    "rxjs": "^5.0.0-beta.12",
-    "zone.js": "^0.6.21",
     "chai": "^3.5.0",
     "mocha": "^3.1.0",
+    "rxjs": "^5.0.0-beta.12",
     "typescript": "^2.0.3",
-    "typings": "^1.4.0"
+    "typings": "^1.4.0",
+    "zone.js": "^0.6.21"
   }
 }

@@ -84,7 +84,7 @@ export function ReactiveSource(): PropertyDecorator {
     return function (target: any, propertyKey: string): void {
         const sink = new Subject();
         Object.defineProperty(target, propertyKey, {
-            value: sink.toObservable()
+            value: sink
         });
         Object.defineProperty(target, `${propertyKey}_Sink`, {
             get: function () {

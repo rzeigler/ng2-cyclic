@@ -24,3 +24,7 @@ export function bindFormValues(projection: string[], on: FormGroup, source: any)
         }
     });
 }
+
+export function second<T>(_: any, t: T): T {
+    return t;
+}
