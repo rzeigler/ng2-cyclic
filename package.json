@@ -2,7 +2,7 @@
   "name": "ng2-reactor",
   "version": "0.1.0-alpha1",
   "description": "A set of utilities for working with ngrx to create a closed loop.",
-  "main": "./dist/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
