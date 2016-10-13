@@ -2,8 +2,8 @@
   "name": "ng2-reactor",
   "version": "0.1.0-alpha1",
   "description": "A set of utilities for working with ngrx to create a closed loop.",
-  "main": "dist/index.js",
-  "typings": "dist/index",
+  "main": "dist/",
+  "typings": "dist/",
   "files": [
     "dist/"
   ],
