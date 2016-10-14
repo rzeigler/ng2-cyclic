@@ -1,4 +1,5 @@
-import {Subject} from "rxjs";
+import {Subject, Observable, Subscription} from "rxjs";
+import {FormGroup, AbstractControl} from "@angular/forms";
 import {SimpleChanges, SimpleChange, OnInit, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy, OnChanges} from "@angular/core";
 // The set of lifecycle notification events. Omits ng-on-changes because that is handled in a separate stream.
 
@@ -115,9 +116,6 @@ export function ReactiveSource(): PropertyDecorator {
         });
     };
 }
-
-import {Observable, Subscription} from "rxjs";
-import {FormGroup, AbstractControl} from "@angular/forms";
 
 export function bindProperty(key: string, on: any) {
     return function (value: any) {
