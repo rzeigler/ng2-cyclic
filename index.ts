@@ -84,6 +84,7 @@ export class ReactiveComponent
 
     ngOnDestroy() {
         this.lifeCycleSubject.next("ngOnDestroy");
+        this.lifeCycleSubject.complete();
     }
 
     ngOnChanges(changes: SimpleChanges) {
