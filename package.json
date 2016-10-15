@@ -1,14 +1,16 @@
 {
   "name": "ng2-reactor",
-  "version": "0.1.0-alpha1",
+  "version": "0.1.0",
   "description": "A set of utilities for working with ngrx to create a closed loop.",
-  "main": "dist/",
-  "typings": "dist/",
+  "main": "index.js",
+  "typings": "index.d.ts",
   "files": [
     "dist/"
   ],
   "scripts": {
-    "build": "tsc",
+    "prepare": "typings install",
+    "build": "npm run prepare && tsc",
+    "prepublish": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
