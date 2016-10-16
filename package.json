@@ -1,11 +1,13 @@
 {
   "name": "ng2-reactor",
-  "version": "0.1.0",
-  "description": "A set of utilities for working with ngrx to create a closed loop.",
+  "version": "0.1.1",
+  "description": "A set of utilities for leveraging rxjs more heavily in angular 2",
   "main": "index.js",
-  "typings": "index.d.ts",
+  "typings": "index",
   "files": [
-    "dist/"
+    "index.js",
+    "index.js.map",
+    "index.d.ts"
   ],
   "scripts": {
     "prepare": "typings install",
