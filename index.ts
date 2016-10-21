@@ -1,5 +1,5 @@
 import {Subject, Observable, Subscription} from "rxjs";
-import {FormGroup, AbstractControl} from "@angular/forms";
+import {FormGroup, AbstractControl, FormControl} from "@angular/forms";
 import {SimpleChanges, SimpleChange, OnInit, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy, OnChanges} from "@angular/core";
 // The set of lifecycle notification events. Omits ng-on-changes because that is handled in a separate stream.
 
@@ -118,37 +118,22 @@ export function ReactiveSource(): PropertyDecorator {
     };
 }
 
-export function bindProperty(key: string, on: any) {
-    return function (value: any) {
-        on[key] = value;
-    };
-}
-
-export function bindProjection(projection: string[], on: any, value: any) {
-    return function (value: any) {
-        projection.forEach(key => {
-            on[key] = value[key];
-        });
-    }
-}
-
-export function bindFormValues(projection: string[], on: FormGroup) {
+export function bindFormValues(target: FormGroup) {
     return function(source: any) {
-        projection.forEach(key => {
-            if (!on.controls[key]) {
-                console.warn(`Disregarding form binding for ${key}. No control exists`);
+        if (!source) {
+            console.warn(`Unable to perform binding, source is null`);
+        } else {
+            for (let k in target.controls) {
+                const control = target.controls[k];
+                if (control instanceof FormControl) {
+                    if (control.value !== source[k]) {
+                        control.setValue(source[k]);
+                    }
+                } else if (control instanceof FormGroup) {
+                    bindFormValues(<FormGroup>target.controls[k])(source[k]);
+                }
             }
-            // Prevent change spinning
-            if (on.controls[key].value !== source[key]) {
-                on.controls[key].setValue(source[key]);
-            }
-        });
-    }
-}
-
-export function bindStore(store: {dispatch: Function}) {
-    return function (value: any) {
-        store.dispatch(value);
+        }
     }
 }
 

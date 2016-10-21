@@ -1,6 +1,6 @@
 {
   "name": "ng2-reactor",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "A set of utilities for leveraging rxjs more heavily in angular 2",
   "main": "index.js",
   "typings": "index",
@@ -32,14 +32,15 @@
   },
   "homepage": "https://github.com/rzeigler/ng2-reactor#readme",
   "peerDependencies": {
-    "@angular/core": "^2.0.1",
-    "@angular/forms": "^2.0.1",
+    "@angular/common": "^2.1.0",
+    "@angular/core": "^2.1.0",
+    "@angular/forms": "^2.1.0",
     "rxjs": "^5.0.0-beta.12"
   },
   "devDependencies": {
-    "@angular/common": "^2.0.2",
-    "@angular/core": "^2.0.1",
-    "@angular/forms": "^2.0.1",
+    "@angular/common": "^2.1.0",
+    "@angular/core": "^2.1.0",
+    "@angular/forms": "^2.1.0",
     "chai": "^3.5.0",
     "mocha": "^3.1.0",
     "rxjs": "^5.0.0-beta.12",
